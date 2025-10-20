@@ -1,0 +1,23 @@
+{
+  "name": "amazon-q",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sfh1980/all-in-one-life-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sfh1980/all-in-one-life-app/issues"
+  },
+  "homepage": "https://github.com/sfh1980/all-in-one-life-app#readme"
+}
