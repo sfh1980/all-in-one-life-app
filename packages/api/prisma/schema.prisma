@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - represents app users
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Will store bcrypt hash
+  firstName String?
+  lastName  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relationships
+  calendars Calendar[]
+  
+  @@map("users")
+}
+
+// Calendar model - users can have multiple calendars
+model Calendar {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  color       String?  // Hex color code
+  isDefault   Boolean  @default(false)
+  userId      String   // Foreign key to User
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relationships
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events Event[]
+  
+  @@map("calendars")
+}
+
+// Event model - calendar entries (appointments, bills, etc.)
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  startTime   DateTime
+  endTime     DateTime
+  allDay      Boolean   @default(false)
+  eventType   EventType
+  metadata    Json?     // Flexible storage for type-specific data
+  calendarId  String    // Foreign key to Calendar
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relationships
+  calendar Calendar @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  
+  @@map("events")
+}
+
+// Enum for different event types
+enum EventType {
+  APPOINTMENT
+  BILL_DUE
+  MEDICATION
+  MAINTENANCE_AUTO
+  MAINTENANCE_HOME
+  WORK_SCHEDULE
+  PERSONAL
+}
+
+
