@@ -43,22 +43,43 @@ model Calendar {
 
 // Event model - calendar entries (appointments, bills, etc.)
 model Event {
+  id             String         @id @default(cuid())
+  title          String
+  description    String?
+  startTime      DateTime
+  endTime        DateTime
+  allDay         Boolean        @default(false)
+  eventType      EventType
+  importanceLevel ImportanceLevel @default(MEDIUM)
+  metadata       Json?          // Flexible storage for type-specific data
+  templateId     String?        // Reference to event template
+  gpsLocation    Json?          // GPS coordinates and address
+  calendarId     String         // Foreign key to Calendar
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  
+  // Relationships
+  calendar Calendar @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  template EventTemplate? @relation(fields: [templateId], references: [id])
+  
+  @@map("events")
+}
+
+// Event Template model - reusable event configurations
+model EventTemplate {
   id          String    @id @default(cuid())
-  title       String
-  description String?
-  startTime   DateTime
-  endTime     DateTime
-  allDay      Boolean   @default(false)
+  name        String
   eventType   EventType
-  metadata    Json?     // Flexible storage for type-specific data
-  calendarId  String    // Foreign key to Calendar
+  defaultDuration Int?   // Duration in minutes
+  defaultMetadata Json?  // Default metadata structure
+  isActive    Boolean   @default(true)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   
   // Relationships
-  calendar Calendar @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  events Event[]
   
-  @@map("events")
+  @@map("event_templates")
 }
 
 // Enum for different event types
@@ -70,6 +91,21 @@ enum EventType {
   MAINTENANCE_HOME
   WORK_SCHEDULE
   PERSONAL
+  ACADEMIC
+  HEALTH
+  SOCIAL
+  LIFE_SKILLS
+  FINANCIAL
+  SELF_CARE
+  TRANSPORTATION
+}
+
+// Enum for importance levels
+enum ImportanceLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
 }
 
 

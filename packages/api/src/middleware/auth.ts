@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { JWTManager } from '../utils/jwt.js';
+import { JWTManager } from '../utils/jwt.ts';
 
 // Extend Express Request type to include user
 declare global {

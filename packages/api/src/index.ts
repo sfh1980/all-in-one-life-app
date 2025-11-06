@@ -3,7 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth.js';
+import authRoutes from './routes/auth.ts';
+import calendarRoutes from './routes/calendar.ts';
 
 // Load env variables
 dotenv.config();
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     endpoints: {
       auth: '/api/auth',
+      calendar: '/api/calendar',
       health: '/health'
     }
   });
@@ -37,13 +39,15 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Authentication routes
+// API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/calendar', calendarRoutes);
 
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Health check: http://localhost:${PORT}/health`);
   console.log(`Auth endpoints: http://localhost:${PORT}/api/auth`);
+  console.log(`Calendar endpoints: http://localhost:${PORT}/api/calendar`);
 });
 

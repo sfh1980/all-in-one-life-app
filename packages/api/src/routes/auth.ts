@@ -1,9 +1,9 @@
 import { Router, Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { PasswordSecurity } from '../utils/password.js';
-import { JWTManager } from '../utils/jwt.js';
-import { validateInput } from '../middleware/auth.js';
-import { registerSchema, loginSchema, refreshTokenSchema } from '../schemas/auth.js';
+import { PasswordSecurity } from '../utils/password.ts';
+import { JWTManager } from '../utils/jwt.ts';
+import { validateInput } from '../middleware/auth.ts';
+import { registerSchema, loginSchema, refreshTokenSchema } from '../schemas/auth.ts';
 
 const router = Router();
 const prisma = new PrismaClient();
